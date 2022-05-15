@@ -29,18 +29,53 @@ function render(variables = {}) {
   let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
   if (variables.includeCover == false) cover = "<div class='cover'></div>";
 
+  let name = `<h1>${variables.name} ${variables.lastname}</h1>`;
+  let role = `<h2>${variables.role}</h2>`;
+  let twitter = `<li><a href="https://twitter.com/${variables.twitter}"><i class="fab fa-twitter"></i></a></li>`;
+  if (variables.twitter == null) {
+    twitter = `<li style="display:none;"><a href="https://twitter.com/${variables.twitter}"><i class="fab fa-twitter"></i></a></li>`;
+  }
+  let github = `<li><a href="https://github.com/${variables.github}"><i class="fab fa-github"></i></a></li>`;
+  if (variables.github == null) {
+    github = `<li style="display:none"><a href="https://github.com/${variables.github}"><i class="fab fa-github"></i></a></li>`;
+  }
+  let instagram = `<li><a href="https://instagram.com/${variables.instagram}"><i class="fab fa-instagram"></i></a></li>`;
+  if (variables.instagram == null) {
+    instagram = `<li style="display:none"><a href="https://instagram.com/${variables.instagram}"><i class="fab fa-instagram"></i></a></li>`;
+  }
+
+  let linkedin = `<li><a href="https://linkedin.com/${variables.linkedin}"><i class="fab fa-linkedin"></i></a></li>`;
+  if (variables.linkedin == null) {
+    linkedin = `<li style="display:none"><a href="https://linkedin.com/${variables.linkedin}"><i class="fab fa-linkedin"></i></a></li>`;
+  }
+
+  for (let i in variables) {
+    if (variables.name == null || variables.lastname == null) {
+      name = "<h1>Name and lastname</h1>";
+    }
+    if (variables.role == null) {
+      role = "<h2>Role</h2>";
+    }
+    if (variables.country == null) {
+      variables.country = "Country";
+    }
+    if (variables.city == null) {
+      variables.city = "City";
+    }
+  }
+
   // reset the website body with the new html output
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
             ${cover}
           <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
+          ${name} 
+          ${role}
+          <h3>${variables.country}, ${variables.city}</h3>
+          <ul class=${variables.socialMediaPosition}>
+            ${twitter}  
+            ${github}  
+            ${instagram}       
+            ${linkedin} 
           </ul>
         </div>
     `;
@@ -58,10 +93,10 @@ window.onload = function() {
     // this is the url for the profile avatar
     avatarURL: "https://randomuser.me/api/portraits/women/42.jpg",
     // social media bar position (left or right)
-    socialMediaPosition: "position-left",
+    socialMediaPosition: "position-right",
     // social media usernames
     twitter: null,
-    github: "alesanchezr",
+    github: null,
     linkedin: null,
     instagram: null,
     name: null,
@@ -85,7 +120,7 @@ window.onload = function() {
           : this.value == "false"
           ? false
           : this.value;
-      render(Object.assign(window.variables, values)); // render again the card with new valus
+      render(Object.assign(window.variables, values)); // render again the card with new values
     });
   });
 };
